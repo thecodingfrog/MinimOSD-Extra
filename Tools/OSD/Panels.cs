@@ -926,12 +926,12 @@ namespace OSD
         public int panGPSats(int first_col, int first_line, int sign, int fAlt)
         {
             osd.setPanel(first_col, first_line);
-            
-            if(sign==1)
-            	osd.printf("%s%2i", "\x0f\x20\x20", osd_satellites_visible);
-			else 
-				osd.printf("%2i",  osd_satellites_visible);
-            
+
+            if (sign == 1)
+                osd.printf("\x0f%s\x20%2i", "3d", osd_satellites_visible);
+            else
+                osd.printf("%2i", osd_satellites_visible);
+
             return 0;
         }
 
@@ -1618,9 +1618,9 @@ const int  ANGLE_2=                25     ;                 // angle above we sw
         public int panHdop(int first_col, int first_line, int sign, int fAlt) {
             osd.setPanel(first_col, first_line);
             if (sign == 1)
-                osd.printf("%s%5.1f", "\x2a\x20", (osd_gps_hdop * .1));
+                osd.printf("\x2a%3.1f", (osd_gps_hdop * .1));
             else
-                osd.printf("%5.1f", (osd_gps_hdop * .1));
+                osd.printf("%3.1f", (osd_gps_hdop * .1));
             return 0;
         }
 

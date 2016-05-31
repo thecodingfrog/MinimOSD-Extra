@@ -197,7 +197,6 @@ namespace OSD {
             //create name of default font
             string fontName = "MinimOSD_" + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + ".mcm";
 
-
             // load font
 
             while (!File.Exists(fontName)) {
@@ -288,7 +287,7 @@ namespace OSD {
                 pi[a++] = new Panel("Roll", pan.panRoll, 13, 1, panRoll_XY);
                 pi[a++] = new Panel("Battery A", pan.panBatt_A, 14, 13, panBatt_A_XY, 1);
                 pi[a++] = new Panel("Battery B", pan.panBatt_B, 14, 12, panBatt_B_XY, 1);
-                pi[a++] = new Panel("Visible Sats", pan.panGPSats, 23, 12, panGPSats_XY, 1);
+                pi[a++] = new Panel("Visible Sats", pan.panGPSats, 22, 0, panGPSats_XY, 1);
                 pi[a++] = new Panel("Real heading", pan.panCOG, 22, 14, panCOG_XY, 1);
                 pi[a++] = new Panel("GPS Coord", pan.panGPS, 1, 14, panGPS_XY, 1, 0, "use less precision (5 digits)", 0, "Show only fractional", 0, "Display in row");
         //        pi[a++] = new Panel("GPS Coord 2", pan.panGPS2, 2, 0, panGPS2_XY, 1, 0, "use less precision (5 digits)", 0, "Show only fractional");
