@@ -292,7 +292,7 @@ namespace OSD {
                 pi[a++] = new Panel("GPS Coord", pan.panGPS, 1, 14, panGPS_XY, 1, 0, "use less precision (5 digits)", 0, "Show only fractional", 0, "Display in row");
         //        pi[a++] = new Panel("GPS Coord 2", pan.panGPS2, 2, 0, panGPS2_XY, 1, 0, "use less precision (5 digits)", 0, "Show only fractional");
 
-                pi[a++] = new Panel("Heading Rose", pan.panRose, 10, 11, panRose_XY, 0);
+                pi[a++] = new Panel("Heading Rose", pan.panRose, 10, 11, panRose_XY, 0, 1, "Alternative mode", 1, "Alternative mode");
                 pi[a++] = new Panel("Heading", pan.panHeading, 21, 11, panHeading_XY, 0);
                 //          pi[a++] = new Panel("Heart Beat", pan.panMavBeat, 14, 15, panMavBeat_XY;
                 pi[a++] = new Panel("Home Direction", pan.panHomeDir, 14, 3, panHomeDir_XY);

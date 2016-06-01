@@ -1060,11 +1060,16 @@ namespace OSD
         public int panRose(int first_col, int first_line, int sign, int fAlt)
         {
             osd.setPanel(first_col, first_line);
-            
+
             //osd_heading  = osd_yaw;
             //if(osd_yaw < 0) osd_heading = 360 + osd_yaw;
-			if(sign==1)
-				osd.printf_P(PSTR("\x20\x20\x20\x24\xcb\xb8\xb9\xcb\x24\x20\x20\x20|"));
+            if (sign == 1 && !is_alt(fAlt))
+            {
+                if (!is_alt2(fAlt))
+                    osd.printf_P(PSTR("\x20\x20\x20\x24\xcb\xb8\xb9\xcb\x24\x20\x20\x20|"));
+                else
+                    osd.printf_P(PSTR("\x20\xc8\xc8\xc8\xc8\x7e\xc8\xc8\xc8\xc8\x20|"));
+            }
             osd.printf_P(PSTR("\xc3\x81\x80\x81\x80\x82\x80\x81\x80\x81\x80\x87"));
            
             
