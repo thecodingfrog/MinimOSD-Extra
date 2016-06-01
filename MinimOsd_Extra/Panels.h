@@ -1055,7 +1055,7 @@ static void panGPSats(point p){
     {
       gps_str = "\x0f\x32\x64";
     }
-    if (osd_fix_type == 3)
+    if (osd_fix_type >= 3)
     {
       gps_str = "\x0f\x33\x64";
     }
