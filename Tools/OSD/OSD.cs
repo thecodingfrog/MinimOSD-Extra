@@ -34,7 +34,7 @@ namespace OSD {
     public partial class OSD : Form {
 
         //*****************************************/		
-        public const string VERSION = "r848 DV";
+        public const string VERSION = "r850 DV";
 
         //max 7456 datasheet pg 10
         //pal  = 16r 30 char
@@ -331,6 +331,9 @@ namespace OSD {
                  //pi[a++] = new Panel("Baro Alt", pan.panBaroAlt, 1, 4, panBroAlt_XY, 1, -1);
                 pi[a++] = new Panel("GPS HDOP", pan.panHdop, 1, 6, panHdop_XY, 1);
                 pi[a++] = new Panel("Channel state", pan.panState, 1, 5, panState_XY, 1, -2, "Select channel");
+                pi[a++] = new Panel("Channel Scale", pan.panScale,  1, 5, panScale_XY, 1, -2, "Select channel");
+                pi[a++] = new Panel("Channel ExtScale", pan.panEScale, 1, 5, panEScale_XY, 1, -2, "Select channel");
+                pi[a++] = new Panel("Channel Value", pan.panCvlaue, 1, 5, panCvalue_XY, 1, -2, "Select channel");
 
 
                 osd_functions_N = a;
@@ -388,6 +391,10 @@ namespace OSD {
                                 tn.Checked = false;
                             } else if (thing.name == "Radar Scale") {
                                 tn.Checked = false;
+                            } else if (thing.name == "Channel state") {
+                                tn.Checked = false;
+                            } else if (thing.name == "Channel Scale") {
+                                tn.Checked = false;                                
                             } else {
                                 tn.Checked = true;
                             }

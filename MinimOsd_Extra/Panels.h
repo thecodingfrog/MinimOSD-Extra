@@ -810,7 +810,7 @@ const char PROGMEM w1[]="\x20\x4E\x6F\x20\x47\x50\x53\x20\x66\x69\x78\x21"; //No
 const char PROGMEM w2[]="\x20\x20\x20\x53\x74\x61\x6c\x6c\x21";             // Stall!
 const char PROGMEM w3[]="\x20\x4f\x76\x65\x72\x53\x70\x65\x65\x64\x21";     //Over Speed!
 const char PROGMEM w4[]="\x42\x61\x74\x74\x65\x72\x79\x20\x4c\x6f\x77\x21"; //Battery Low!
-const char PROGMEM w5[]="\x20\x20\x4c\x6f\x77\x20\x52\x73\x73\x69";         //Low Rssi
+const char PROGMEM w5[]="\x20\x20\x4c\x6f\x77\x20\x52\x73\x73\x69!";        //Low Rssi
 const char PROGMEM w6[]="\x48\x69\x67\x68\x20\x56\x53\x70\x65\x65\x64\x21"; //Hi VSpeed!
 const char PROGMEM w7[]="Batt B low!"; 
 const char PROGMEM w8[]="Fence Low!";
@@ -1264,7 +1264,7 @@ static void panFdata(point p){ // итоги полета
 
     print_list(fd);
 
-    print_gps(gps_f2,'|');
+    print_gps(gps_f6,'|');
 }
 
 
@@ -1720,15 +1720,6 @@ char const * const mode_mw_strings[] PROGMEM ={
 
 static void panFlightMode(point p){
 
-#ifdef DEBUG
-    static byte old_mode = -1;
-    
-    if(osd_mode !=old_mode) {
-        Serial.printf_P(PSTR("mode changed from %d to %d\n"), old_mode, osd_mode);
-        old_mode = osd_mode;
-    }
-#endif
-
     //PGM_P mode_str;
     const char * const *ptr;
     
@@ -1877,11 +1868,7 @@ static const char PROGMEM  * const sts_arr[]={
     sts_0, sts_1, sts_2, sts_3, sts_4
 };
 
-static void panState(point p) {
-    byte ch = get_alt_num(p) + 4;
-
-    if(has_sign(p)) osd_printi_1(PSTR("C%i "),ch+1);
-
+static byte NOINLINE get_chan_pos(byte ch, byte fExt=0){
     // 1000 - 2000 
     // 1200
     // 1400
@@ -1889,15 +1876,72 @@ static void panState(point p) {
     // 1800
     int v=chan_raw[ch];
     byte n;
+    const int low =(fExt?900:1000);
+    const int high=(fExt?2100:2000);
     
-    if(v<1000) n=0;
+    
+    if(v<low) n=0;
     else {
-	n=( v - 1000)/200;
+	n=( v - low)/((high-low)/5);
 	if(n>4) n=4;
     }
 
+    return n;
+}
+
+static void panState(point p) {
+    byte ch = get_alt_num(p) + 4;
+
+    if(has_sign(p)) osd_printi_1(PSTR("C%i "),ch+1);
+
+    byte n = get_chan_pos(ch);
+
     osd.print_P((PGM_P)pgm_read_word(&sts_arr[n]));
 }
+
+static void panScale(point p) {
+    byte ch = get_alt_num(p) + 4;
+
+    if(has_sign(p)) osd_printi_1(PSTR("%i"),ch+1);
+
+    byte n = get_chan_pos(ch);
+    byte c;
+
+    for(byte i=0;i<5;i++){
+	c=0x80;
+	if(i==n) c=0x81;
+	osd.write_S(c);
+    }
+}
+
+static void panEScale(point p) {
+    byte ch = get_alt_num(p) + 4;
+
+    if(has_sign(p)) osd_printi_1(PSTR("%i"),ch+1);
+
+    byte n = get_chan_pos(ch,1);
+    byte c;
+
+    for(byte i=0;i<5;i++){
+	c=0x80;
+	if(i==n) c=0x81;
+	osd.write_S(c);
+    }
+}
+
+static void panCValue(point p) {
+    byte ch = get_alt_num(p) + 4;
+
+    if(has_sign(p)) osd_printi_1(PSTR("C%i "),ch+1);
+
+//Serial.printf_P(PSTR(""),
+    osd_printi_1(PSTR("%4d"),chan_raw[ch]);
+
+}
+
+/*
+const int panState_XY = 88;
+*/
 
 /* **************************************************************** */
 // Panel  : panSetup
@@ -2363,6 +2407,9 @@ const Panels_list PROGMEM panels_list[] = {
     { ID_of(RadarScale),	panRadarScale, 	RADAR_CHAR  },
     { ID_of(Hdop),		panHdop, 	0  },
     { ID_of(State),		panState, 	0  },
+    { ID_of(Scale),		panScale, 	0  },
+    { ID_of(EScale),		panScale, 	0  },
+    { ID_of(CValue),		panCValue, 	0  },
 #if defined(USE_SENSORS)
     { ID_of(sensor1) | 0x80,	panSensor1, 	0 },
     { ID_of(sensor2) | 0x80,	panSensor2, 	0 },
