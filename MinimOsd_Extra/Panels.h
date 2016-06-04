@@ -1853,9 +1853,9 @@ static void NOINLINE panSensor4(point p) {
 
 static void panHdop(point p) {
     if(has_sign(p))
-      osd_printf_1(PSTR("\x2a%3.1f"), eph * 0.1);
+      osd_printf_1(PSTR("\x2a%2.1f"), eph * 0.01);
     else
-      osd_printf_1(PSTR("%3.1f"), eph * 0.1);
+      osd_printf_1(PSTR("%2.1f"), eph * 0.01);
 }
 
 static const char PROGMEM sts_0[]="Off";

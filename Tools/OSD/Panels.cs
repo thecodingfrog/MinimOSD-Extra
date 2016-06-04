@@ -1569,9 +1569,9 @@ const int  ANGLE_2=                25     ;                 // angle above we sw
         public int panHdop(int first_col, int first_line, int sign, int fAlt) {
             osd.setPanel(first_col, first_line);
             if (sign == 1)
-                osd.printf("\x2a%3.1f", (osd_gps_hdop * .1));
+                osd.printf("\x2a%2.1f", (osd_gps_hdop * .01));
             else
-                osd.printf("%3.1f", (osd_gps_hdop * .1));
+                osd.printf("%2.1f", (osd_gps_hdop * .01));
             return 0;
         }
 
