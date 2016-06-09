@@ -25,7 +25,7 @@ static float /*NOINLINE*/ cnvGroundSpeed() { // вынос инварианта
     return osd_groundspeed * get_converts();
 }
 
-static void NOINLINE printTime(int t, byte blink){
+static void NOINLINE printTime(uint16_t t, byte blink){
     osd.printf_P(PSTR("%3i%c%02i"),((int)t/60)%60,(blink && lflags.blinker)?0x20:0x3a, (int)t%60);
 }
 
@@ -1146,10 +1146,8 @@ struct Formats {
 static NOINLINE void print_list(const Formats *f){
     PGM_P fmt;
     byte t;
-    char m;
     float *v;
     float k;
-    const byte *c;
     char h;
     
     float val=0;
@@ -1448,7 +1446,7 @@ static int getTargetBearing(){
 // Output : 2 symbols that are combined as one arrow, shows direction to next waypoint
 // Size   : 1 x 2  (rows x chars)
 // Staus  : not ready
-
+/*
 static void panWPDir(point p){
     if(wp_number > 0 ){
    
@@ -1457,7 +1455,7 @@ static void panWPDir(point p){
 	showArrow(getTargetBearing(),0);
     }
 }
-
+*/
 /* **************************************************************** */
 // Panel  : panWPDis
 // Needs  : X, Y locations
@@ -1876,8 +1874,8 @@ static byte NOINLINE get_chan_pos(byte ch, byte fExt=0){
     // 1800
     int v=chan_raw[ch];
     byte n;
-    const int low =(fExt?900:1000);
-    const int high=(fExt?2100:2000);
+    const int low =(fExt?800:1000);
+    const int high=(fExt?2200:2000);
     
     
     if(v<low) n=0;
@@ -1894,7 +1892,7 @@ static void panState(point p) {
 
     if(has_sign(p)) osd_printi_1(PSTR("C%i "),ch+1);
 
-    byte n = get_chan_pos(ch);
+    byte n = get_chan_pos(ch, is_alt(p));
 
     osd.print_P((PGM_P)pgm_read_word(&sts_arr[n]));
 }
@@ -1914,20 +1912,6 @@ static void panScale(point p) {
     }
 }
 
-static void panEScale(point p) {
-    byte ch = get_alt_num(p) + 4;
-
-    if(has_sign(p)) osd_printi_1(PSTR("%i"),ch+1);
-
-    byte n = get_chan_pos(ch,1);
-    byte c;
-
-    for(byte i=0;i<5;i++){
-	c=0x80;
-	if(i==n) c=0x81;
-	osd.write_S(c);
-    }
-}
 
 static void panCValue(point p) {
     byte ch = get_alt_num(p) + 4;
@@ -2408,7 +2392,6 @@ const Panels_list PROGMEM panels_list[] = {
     { ID_of(Hdop),		panHdop, 	0  },
     { ID_of(State),		panState, 	0  },
     { ID_of(Scale),		panScale, 	0  },
-    { ID_of(EScale),		panScale, 	0  },
     { ID_of(CValue),		panCValue, 	0  },
 #if defined(USE_SENSORS)
     { ID_of(sensor1) | 0x80,	panSensor1, 	0 },

@@ -34,7 +34,7 @@ namespace OSD {
     public partial class OSD : Form {
 
         //*****************************************/		
-        public const string VERSION = "r850 DV";
+        public const string VERSION = "r851 DV";
 
         //max 7456 datasheet pg 10
         //pal  = 16r 30 char
@@ -280,7 +280,7 @@ namespace OSD {
                 var pi = scr[n].panelItems;
 
                 // Display name,printfunction,X,Y,ENaddress,Xaddress,Yaddress
-                pi[a++] = new Panel("Horizon", pan.panHorizon, 8, 5, panHorizon_XY, 1, 0, "Show HUD frame", 0, "Show ILS", 1, "Show Radar", 0 , "  with track"); // first!
+                pi[a++] = new Panel("Horizon", pan.panHorizon, 8, 5, panHorizon_XY, 1, UI_Mode.UI_Checkbox, 0, "Show HUD frame", 0, "Show ILS", 1, "Show Radar", 0 , "  with track"); // first!
 
                 //pi[a++] = new Panel("Center", pan.panCenter, 13, 8, panCenter_XY);
                 pi[a++] = new Panel("Pitch", pan.panPitch, 7, 1, panPitch_XY);
@@ -289,10 +289,10 @@ namespace OSD {
                 pi[a++] = new Panel("Battery B", pan.panBatt_B, 14, 12, panBatt_B_XY, 1);
                 pi[a++] = new Panel("Visible Sats", pan.panGPSats, 22, 0, panGPSats_XY, 1);
                 pi[a++] = new Panel("Real heading", pan.panCOG, 22, 14, panCOG_XY, 1);
-                pi[a++] = new Panel("GPS Coord", pan.panGPS, 1, 14, panGPS_XY, 1, 0, "use less precision (5 digits)", 0, "Show only fractional", 0, "Display in row");
-        //        pi[a++] = new Panel("GPS Coord 2", pan.panGPS2, 2, 0, panGPS2_XY, 1, 0, "use less precision (5 digits)", 0, "Show only fractional");
+                pi[a++] = new Panel("GPS Coord", pan.panGPS, 1, 14, panGPS_XY, 1, UI_Mode.UI_Checkbox, 0, "use less precision (5 digits)", 0, "Show only fractional", 0, "Display in row");
+                //        pi[a++] = new Panel("GPS Coord 2", pan.panGPS2, 2, 0, panGPS2_XY, 1, UI_Mode.UI_Checkbox, 0, "use less precision (5 digits)", 0, "Show only fractional");
 
-                pi[a++] = new Panel("Heading Rose", pan.panRose, 10, 11, panRose_XY, 0,0,"Marker below rose", 0, "Even panel length");
+                pi[a++] = new Panel("Heading Rose", pan.panRose, 10, 11, panRose_XY, 0, UI_Mode.UI_Checkbox, 0,"Marker below rose", 0, "Even panel length");
                 pi[a++] = new Panel("Heading", pan.panHeading, 21, 11, panHeading_XY, 0);
                 //          pi[a++] = new Panel("Heart Beat", pan.panMavBeat, 14, 15, panMavBeat_XY;
                 pi[a++] = new Panel("Home Direction", pan.panHomeDir, 14, 3, panHomeDir_XY);
@@ -300,20 +300,20 @@ namespace OSD {
                 pi[a++] = new Panel("WP Direction", pan.panWPDir, 4, 9, panWPDir_XY);
                 pi[a++] = new Panel("WP Distance", pan.panWPDis, 1, 11, panWPDis_XY, 1);
 
-                pi[a++] = new Panel("Altitude", pan.panAlt, 22, 3, panAlt_XY, 1, 0, "Reset to 0 on arming");
+                pi[a++] = new Panel("Altitude", pan.panAlt, 22, 3, panAlt_XY, 1, UI_Mode.UI_Checkbox, 0, "Reset to 0 on arming");
                 pi[a++] = new Panel("Home Altitude", pan.panHomeAlt, 22, 2, panHomeAlt_XY, 1);
-                pi[a++] = new Panel("Vertical Speed", pan.panClimb, 1, 8, panClimb_XY, 1, 0 , "show in m/s");
-                pi[a++] = new Panel("Battery Percent", pan.panBatteryPercent, 14, 15, panBatteryPercent_XY, 1, 0, "Show percent, not used mAH");
+                pi[a++] = new Panel("Vertical Speed", pan.panClimb, 1, 8, panClimb_XY, 1, UI_Mode.UI_Checkbox, 0 , "show in m/s");
+                pi[a++] = new Panel("Battery Percent", pan.panBatteryPercent, 14, 15, panBatteryPercent_XY, 1, UI_Mode.UI_Checkbox, 0, "Show percent, not used mAH");
                 pi[a++] = new Panel("Current", pan.panCur_A, 14, 14, panCurrA_XY, 1);
 
-                pi[a++] = new Panel("Velocity", pan.panVel, 1, 2, panVel_XY, 1, 0, "Show in m/s");
-                pi[a++] = new Panel("Air Speed", pan.panAirSpeed, 1, 1, panAirSpeed_XY, 1, 0, "Show in m/s");
+                pi[a++] = new Panel("Velocity", pan.panVel, 1, 2, panVel_XY, 1, UI_Mode.UI_Checkbox, 0, "Show in m/s");
+                pi[a++] = new Panel("Air Speed", pan.panAirSpeed, 1, 1, panAirSpeed_XY, 1, UI_Mode.UI_Checkbox, 0, "Show in m/s");
                 pi[a++] = new Panel("Throttle", pan.panThr, 1, 3, panThr_XY, 1);
                 pi[a++] = new Panel("Flight Mode", pan.panFlightMode, 1, 13, panFMod_XY, 1);
 
-                pi[a++] = new Panel("Wind Speed", pan.panWindSpeed, 24, 7, panWindSpeed_XY, 1, 0, "Show in m/s");
+                pi[a++] = new Panel("Wind Speed", pan.panWindSpeed, 24, 7, panWindSpeed_XY, 1, UI_Mode.UI_Checkbox, 0, "Show in m/s");
                 pi[a++] = new Panel("Warnings", pan.panWarn, 9, 4, panWarn_XY);
-                pi[a++] = new Panel("Time", pan.panTime, 23, 4, panTime_XY,-1,0,"Blinking semicolon");
+                pi[a++] = new Panel("Time", pan.panTime, 23, 4, panTime_XY,-1, UI_Mode.UI_Checkbox, 0,"Blinking semicolon");
                 pi[a++] = new Panel("RSSI", pan.panRSSI, 7, 13, panRSSI_XY, 1);
                 pi[a++] = new Panel("Tune", pan.panTune, 21, 10, panTune_XY, 1);
                 pi[a++] = new Panel("Efficiency", pan.panEff, 1, 11, panEff_XY, 1);
@@ -323,17 +323,16 @@ namespace OSD {
                 pi[a++] = new Panel("Trip Distance", pan.panDistance, 22, 2, panDistance_XY, 1);
                 pi[a++] = new Panel("Radar Scale", pan.panRadarScale, 23, 9, panRadarScale_XY, 1);
                 pi[a++] = new Panel("Flight Data", pan.panFData, 1, 2, panFdata_XY);
-                pi[a++] = new Panel("Message", pan.panMessage, 2, 10, panMessage_XY, 1, 0, "Not scroll if not fit" /*,0,"Not show screen number"*/ );
-                pi[a++] = new Panel("Sensor 1", pan.panSenor1, 0, 4, panSenor1_XY, -1, 1, "PWM input");
-                pi[a++] = new Panel("Sensor 2", pan.panSenor2, 0, 5, panSenor2_XY, -1, 1, "PWM input");
-                pi[a++] = new Panel("Sensor 3", pan.panSenor3, 0, 6, panSenor3_XY, -1, 1, "PWM input");
-                pi[a++] = new Panel("Sensor 4", pan.panSenor4, 0, 7, panSenor4_XY, -1, 1, "PWM input");
+                pi[a++] = new Panel("Message", pan.panMessage, 2, 10, panMessage_XY, 1, UI_Mode.UI_Checkbox, 0, "Not scroll if not fit" /*,0,"Not show screen number"*/ );
+                pi[a++] = new Panel("Sensor 1", pan.panSenor1, 0, 4, panSenor1_XY, -1, UI_Mode.UI_Checkbox, 1, "PWM input");
+                pi[a++] = new Panel("Sensor 2", pan.panSenor2, 0, 5, panSenor2_XY, -1, UI_Mode.UI_Checkbox, 1, "PWM input");
+                pi[a++] = new Panel("Sensor 3", pan.panSenor3, 0, 6, panSenor3_XY, -1, UI_Mode.UI_Checkbox, 1, "PWM input");
+                pi[a++] = new Panel("Sensor 4", pan.panSenor4, 0, 7, panSenor4_XY, -1, UI_Mode.UI_Checkbox, 1, "PWM input");
                  //pi[a++] = new Panel("Baro Alt", pan.panBaroAlt, 1, 4, panBroAlt_XY, 1, -1);
                 pi[a++] = new Panel("GPS HDOP", pan.panHdop, 1, 6, panHdop_XY, 1);
-                pi[a++] = new Panel("Channel state", pan.panState, 1, 5, panState_XY, 1, -2, "Select channel");
-                pi[a++] = new Panel("Channel Scale", pan.panScale,  1, 5, panScale_XY, 1, -2, "Select channel");
-                pi[a++] = new Panel("Channel ExtScale", pan.panEScale, 1, 5, panEScale_XY, 1, -2, "Select channel");
-                pi[a++] = new Panel("Channel Value", pan.panCvlaue, 1, 5, panCvalue_XY, 1, -2, "Select channel");
+                pi[a++] = new Panel("Channel state", pan.panState, 1, 5, panState_XY, 1, UI_Mode.UI_Combo, 0, "Select channel");
+                pi[a++] = new Panel("Channel Scale", pan.panScale, 1, 5, panScale_XY, 1, UI_Mode.UI_Combo_Cb, 0, "Select channel",-1,"Extended range (800-2200)");
+                pi[a++] = new Panel("Channel Value", pan.panCvlaue, 1, 5, panCvalue_XY, 1, UI_Mode.UI_Combo, 0, "Select channel");
 
 
                 osd_functions_N = a;
@@ -394,7 +393,9 @@ namespace OSD {
                             } else if (thing.name == "Channel state") {
                                 tn.Checked = false;
                             } else if (thing.name == "Channel Scale") {
-                                tn.Checked = false;                                
+                                tn.Checked = false;
+                            } else if (thing.name == "Channel Value") {
+                                tn.Checked = false;                                                                
                             } else {
                                 tn.Checked = true;
                             }
@@ -1233,11 +1234,16 @@ namespace OSD {
                             if (pi.sign >= 0)
                                 pi.sign = (p.x & 0x80) == 0 ? 1 : 0; // inverted
 
-                            if (pi.Altf == -2) {
+                            switch(pi.ui_mode) {
+                            case UI_Mode.UI_Combo:
+                            case UI_Mode.UI_Combo_Cb:
+                                if (pi.Altf >= 0)
+                                    pi.Altf = (p.y & 0x40) == 0 ? 0 : 1;
                                 pi.Alt2 = (p.y & 0x20) == 0 ? 0 : 1;                            
                                 pi.Alt3 = (p.y & 0x10) == 0 ? 0 : 1;                            
                                 pi.Alt4 = (p.x & 0x40) == 0 ? 0 : 1;
-                            } else {
+                                break;
+                            case UI_Mode.UI_Checkbox:
                                 if(pi.Altf >=0)
                                     pi.Altf = (p.y & 0x40) == 0 ? 0 : 1;
                                 if (pi.Alt2 >= 0)
@@ -1246,6 +1252,7 @@ namespace OSD {
                                     pi.Alt3 = (p.y & 0x10) == 0 ? 0 : 1;
                                 if (pi.Alt3 >= 0)
                                     pi.Alt4 = (p.x & 0x40) == 0 ? 0 : 1;
+                                break;
                             }
                             pi.x = (byte)Constrain(p.x & 0x3f, 0, SCREEN_W);
                             pi.y = (byte)Constrain(p.y & 0x0f, 0, SCREEN_H);
@@ -1804,29 +1811,14 @@ namespace OSD {
                                             //scr[k].panelItems[a] = new Panel(pi.name, pi.show, int.Parse(strings[1]), int.Parse(strings[2]), pi.pos);
                                             pi.x = int.Parse(strings[1]);
                                             pi.y = int.Parse(strings[2]);
-                                            pi.sign=1;
-                                            try {
-                                                pi.sign = int.Parse(strings[4]);
-                                            } catch { }
-                                            pi.Altf=0;
-                                            try {
-                                                pi.Altf = int.Parse(strings[5]);
-                                            } catch { }
-
-                                            pi.Alt2 = 0;
-                                            try {
-                                                pi.Alt2 = int.Parse(strings[6]);
-                                            } catch { }
-
-                                            pi.Alt3 = 0;
-                                            try {
-                                                pi.Alt3 = int.Parse(strings[7]);
-                                            } catch { }
-
-                                            pi.Alt4 = 0;
-                                            try {
-                                                pi.Alt4 = int.Parse(strings[8]);
-                                            } catch { }
+                                            if (!int.TryParse(strings[4], out pi.sign)) {
+                                                pi.sign = 1;
+                                            }
+                                            // if TryParse fails, default is zero
+                                            int.TryParse(strings[5], out pi.Altf);
+                                            int.TryParse(strings[6], out pi.Alt2);
+                                            int.TryParse(strings[7], out pi.Alt3);
+                                            int.TryParse(strings[8], out pi.Alt4);
 
                                             TreeNode[] tnArray = scr[k].LIST_items.Nodes.Find(scr[k].panelItems[a].name, true);
                                             if (tnArray.Length > 0)
