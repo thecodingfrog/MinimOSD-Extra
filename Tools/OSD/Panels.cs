@@ -15,7 +15,7 @@ namespace OSD
 
     class Panels
     {
-        OSD osd;
+        public OSD osd;
 
         public Panels(OSD os) {
 			osd = os;
@@ -260,7 +260,7 @@ namespace OSD
         // Size   : 1 x 7Hea  (rows x chars)
         // Staus  : done
 
-        public int panCOG(int first_col, int first_line,int sign, int fAlt)
+        public int panCOG(int first_col, int first_line, int sign, int fAlt, Panel p)
         {
             osd.setPanel(first_col, first_line);
             
@@ -278,7 +278,7 @@ namespace OSD
         // Size   : 1 x 7Hea  (rows x chars)
         // Staus  : done
 
-        public int panDistance(int first_col, int first_line, int sign, int fAlt)
+        public int panDistance(int first_col, int first_line, int sign, int fAlt, Panel p)
         {
             osd.setPanel(first_col, first_line);
             
@@ -298,7 +298,7 @@ namespace OSD
         // Size   : 1 x 7Hea  (rows x chars)
         // Staus  : done
 
-        public int panTemp(int first_col, int first_line, int sign, int fAlt)
+        public int panTemp(int first_col, int first_line, int sign, int fAlt, Panel p)
         {
             osd.setPanel(first_col, first_line);
             
@@ -316,7 +316,7 @@ namespace OSD
         // Size   : 1 x 7Hea  (rows x chars)
         // Staus  : done
 
-        public int panCh(int first_col, int first_line, int sign, int fAlt)
+        public int panCh(int first_col, int first_line, int sign, int fAlt, Panel p)
        {
            osd.setPanel(first_col, first_line);
            
@@ -335,7 +335,7 @@ namespace OSD
         // Size   : 1 x 7Hea  (rows x chars)
         // Staus  : done
 
-        public int panEff(int first_col, int first_line, int sign, int fAlt)
+        public int panEff(int first_col, int first_line, int sign, int fAlt, Panel p)
         {
         osd.setPanel(first_col, first_line);
         
@@ -355,7 +355,7 @@ namespace OSD
  	    // Size   : 1 x 7Hea  (rows x chars)
   	    // Staus  : done
 
-        public int panRSSI(int first_col, int first_line, int sign, int fAlt)
+        public int panRSSI(int first_col, int first_line, int sign, int fAlt, Panel p)
         {
  	        osd.setPanel(first_col, first_line);
  	        
@@ -373,7 +373,7 @@ namespace OSD
         // Size   : 1 x 6Hea  (rows x chars)
         // Staus  : done
 
-        public int panCALLSIGN(int first_col, int first_line, int sign, int fAlt)
+        public int panCALLSIGN(int first_col, int first_line, int sign, int fAlt, Panel p)
         {
             osd.setPanel(first_col, first_line);
             
@@ -391,7 +391,7 @@ namespace OSD
         // Size   : 1 x 7Hea  (rows x chars)
         // Staus  : done
 
-        public int panTune(int first_col, int first_line, int sign, int fAlt)
+        public int panTune(int first_col, int first_line, int sign, int fAlt, Panel p)
         {
             osd.setPanel(first_col, first_line);
             
@@ -421,7 +421,7 @@ namespace OSD
         // Size   : 1 x 7Hea  (rows x chars)
         // Staus  : done
 
-        public int panClimb(int first_col, int first_line, int sign, int fAlt)
+        public int panClimb(int first_col, int first_line, int sign, int fAlt, Panel p)
         {
             osd.setPanel(first_col, first_line);
             
@@ -454,7 +454,7 @@ namespace OSD
         // Size   : 1 x 7  (rows x chars)
         // Staus  : done
 
-        public int panWindSpeed(int first_col, int first_line, int sign, int fAlt)
+        public int panWindSpeed(int first_col, int first_line, int sign, int fAlt, Panel p)
         {
             osd.setPanel(first_col, first_line);
             byte c;
@@ -484,7 +484,7 @@ namespace OSD
         // Size   : 1 x 7Hea  (rows x chars)
         // Staus  : done
 
-        public int panOff(int first_col, int first_line, int sign, int fAlt)
+        public int panOff(int first_col, int first_line, int sign, int fAlt, Panel p)
         {
             osd.setPanel(first_col, first_line);
             
@@ -503,7 +503,7 @@ namespace OSD
         // Size   : 1 x 7Hea  (rows x chars)
         // Staus  : done
 
-        public int panCur_A(int first_col, int first_line, int sign, int fAlt)
+        public int panCur_A(int first_col, int first_line, int sign, int fAlt, Panel p)
         {
             osd.setPanel(first_col, first_line);
             
@@ -522,7 +522,7 @@ namespace OSD
         // Size   : 1 x 7Hea  (rows x chars)
         // Staus  : done
 
-        public int panAlt(int first_col, int first_line, int sign, int fAlt)
+        public int panAlt(int first_col, int first_line, int sign, int fAlt, Panel p)
         {
             osd.setPanel(first_col, first_line);
             
@@ -541,7 +541,7 @@ namespace OSD
         // Output : Warning panel
         // Size   : 1 x 7Hea  (rows x chars)
         // Staus  : done
-        public int panWarn(int first_col, int first_line, int sign, int fAlt) {
+        public int panWarn(int first_col, int first_line, int sign, int fAlt, Panel p) {
          osd.setPanel(first_col, first_line);
          
          osd.printf_P(PSTR("\x20\x4f\x76\x65\x72\x53\x70\x65\x65\x64\x21\x20"));
@@ -556,7 +556,7 @@ namespace OSD
         // Size   : 1 x 7Hea  (rows x chars)
         // Staus  : done
 
-        public int panHomeAlt(int first_col, int first_line, int sign, int fAlt)
+        public int panHomeAlt(int first_col, int first_line, int sign, int fAlt, Panel p)
         {
             osd.setPanel(first_col, first_line);
             
@@ -576,7 +576,7 @@ namespace OSD
         // Size   : 1 x 7  (rows x chars)
         // Staus  : done
 
-        public int panVel(int first_col, int first_line, int sign, int fAlt)
+        public int panVel(int first_col, int first_line, int sign, int fAlt, Panel p)
         {
             osd.setPanel(first_col, first_line);
 
@@ -606,7 +606,7 @@ namespace OSD
         // Size   : 1 x 7  (rows x chars)
         // Staus  : done
 
-        public int panAirSpeed(int first_col, int first_line, int sign, int fAlt)
+        public int panAirSpeed(int first_col, int first_line, int sign, int fAlt, Panel p)
         {
             osd.setPanel(first_col, first_line);
 
@@ -636,7 +636,7 @@ namespace OSD
         // Size   : 1 x 7  (rows x chars)
         // Staus  : done
 
-        public int panBatteryPercent(int first_col, int first_line, int sign, int fAlt)
+        public int panBatteryPercent(int first_col, int first_line, int sign, int fAlt, Panel p)
         {
             osd.setPanel(first_col, first_line);
 
@@ -665,7 +665,7 @@ namespace OSD
         // Size   : 1 x 7  (rows x chars)
         // Staus  : done
 
-        public int panTime(int first_col, int first_line, int sign, int fAlt)
+        public int panTime(int first_col, int first_line, int sign, int fAlt, Panel p)
         {
             osd.setPanel(first_col, first_line);
             
@@ -681,7 +681,7 @@ namespace OSD
         // Size   : 1 x 7  (rows x chars)
         // Staus  : done
 
-        public int panThr(int first_col, int first_line, int sign, int fAlt)
+        public int panThr(int first_col, int first_line, int sign, int fAlt, Panel p)
         {
             osd.setPanel(first_col, first_line);
             
@@ -700,7 +700,7 @@ namespace OSD
         // Size   : 1 x 7  (rows x chars)
         // Staus  : done
 
-        public int panHomeDis(int first_col, int first_line, int sign, int fAlt)
+        public int panHomeDis(int first_col, int first_line, int sign, int fAlt, Panel p)
         {
             osd.setPanel(first_col, first_line);
             
@@ -721,7 +721,7 @@ namespace OSD
         // Size   : 2 x 4  (rows x chars)
         // Staus  : done
 
-        public int panCenter(int first_col, int first_line, int sign, int fAlt)
+        public int panCenter(int first_col, int first_line, int sign, int fAlt, Panel p)
         {
             osd.setPanel(first_col, first_line);
             
@@ -737,7 +737,7 @@ namespace OSD
         // Size   : 14 x 4  (rows x chars)
         // Staus  : done
 
-        public int panHorizon(int first_col, int first_line, int sign, int fAlt)
+        public int panHorizon(int first_col, int first_line, int sign, int fAlt, Panel p)
         {
             osd.setPanel(first_col, first_line);
 
@@ -792,7 +792,7 @@ namespace OSD
         // Size   : 1 x 6  (rows x chars)
         // Staus  : done
 
-        public int panPitch(int first_col, int first_line, int sign, int fAlt)
+        public int panPitch(int first_col, int first_line, int sign, int fAlt, Panel p)
         {
             osd.setPanel(first_col, first_line);
             
@@ -808,7 +808,7 @@ namespace OSD
         // Size   : 1 x 6  (rows x chars)
         // Staus  : done
 
-        public int panRoll(int first_col, int first_line, int sign, int fAlt)
+        public int panRoll(int first_col, int first_line, int sign, int fAlt, Panel p)
         {
             osd.setPanel(first_col, first_line);
             
@@ -824,7 +824,7 @@ namespace OSD
         // Size   : 1 x 8  (rows x chars)
         // Staus  : done
 
-        public int panBatt_A(int first_col, int first_line, int sign, int fAlt)
+        public int panBatt_A(int first_col, int first_line, int sign, int fAlt, Panel p)
         {
             osd.setPanel(first_col, first_line);
             
@@ -845,7 +845,7 @@ namespace OSD
         // Size   : 1 x 8  (rows x chars)
         // Staus  : done
 
-        public int panBatt_B(int first_col, int first_line, int sign, int fAlt)
+        public int panBatt_B(int first_col, int first_line, int sign, int fAlt, Panel p)
         {
             osd.setPanel(first_col, first_line);
             
@@ -859,7 +859,7 @@ namespace OSD
 
         //------------------ Panel: Startup ArduCam OSD LOGO -------------------------------
 
-        public int panLogo(int first_col, int first_line, int sign, int fAlt)
+        public int panLogo(int first_col, int first_line, int sign, int fAlt, Panel p)
         {
             osd.setPanel(first_col, first_line);
             
@@ -870,9 +870,9 @@ namespace OSD
 
         //------------------ Panel: Waiting for MAVLink HeartBeats -------------------------------
 
-        public int panWaitMAVBeats(int first_col, int first_line, int sign, int fAlt)
+        public int panWaitMAVBeats(int first_col, int first_line, int sign, int fAlt, Panel p)
         {
-            panLogo(10, 5, 0, 0);
+            //panLogo(10, 5, 0, 0);
             osd.setPanel(first_col, first_line);
             
             osd.printf_P(PSTR("Waiting for|MAVLink heartbeats..."));
@@ -923,7 +923,7 @@ namespace OSD
         // Size   : 1 x 5  (rows x chars)
         // Staus  : done
 
-        public int panGPSats(int first_col, int first_line, int sign, int fAlt)
+        public int panGPSats(int first_col, int first_line, int sign, int fAlt, Panel p)
         {
             osd.setPanel(first_col, first_line);
 
@@ -942,7 +942,7 @@ namespace OSD
         // Size   : 2 x 12  (rows x chars)
         // Staus  : done
 
-        public int panGPS(int first_col, int first_line, int sign, int fAlt)
+        public int panGPS(int first_col, int first_line, int sign, int fAlt, Panel p)
         {
             osd.setPanel(first_col, first_line);
 
@@ -993,7 +993,7 @@ namespace OSD
         // Size   : 1 x 5  (rows x chars)
         // Staus  : not ready
 
-        public int panHeading(int first_col, int first_line, int sign, int fAlt)
+        public int panHeading(int first_col, int first_line, int sign, int fAlt, Panel p)
         {
             osd.setPanel(first_col, first_line);
 
@@ -1011,7 +1011,7 @@ namespace OSD
         // Size   : 2 x 13  (rows x chars)
         // Staus  : done
 
-        public int panRose(int first_col, int first_line, int sign, int fAlt)
+        public int panRose(int first_col, int first_line, int sign, int fAlt, Panel p)
         {
             osd.setPanel(first_col, first_line);
 
@@ -1074,7 +1074,7 @@ namespace OSD
         // Size   : 1 x 2  (rows x chars)
         // Staus  : not ready
 
-        public int panWPDir(int first_col, int first_line, int sign, int fAlt)
+        public int panWPDir(int first_col, int first_line, int sign, int fAlt, Panel p)
         {
             osd.setPanel(first_col, first_line);
             
@@ -1092,7 +1092,7 @@ namespace OSD
         // Size   : 1 x 2  (rows x chars)
         // Staus  : not ready TODO - CHANGE the Waypoint symbol - Now only a Wp!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-        public int panWPDis(int first_col, int first_line, int sign, int fAlt)
+        public int panWPDis(int first_col, int first_line, int sign, int fAlt, Panel p)
         {
             osd.setPanel(first_col, first_line);
             
@@ -1115,7 +1115,7 @@ namespace OSD
         // Size   : 1 x 2  (rows x chars)
         // Status : not tested
 
-        public int panHomeDir(int first_col, int first_line, int sign, int fAlt)
+        public int panHomeDir(int first_col, int first_line, int sign, int fAlt, Panel p)
         {
             osd.setPanel(first_col, first_line);
             
@@ -1131,7 +1131,7 @@ namespace OSD
         // Size   : 1 x 2  (rows x chars)
         // Status : done
 
-        public int panFlightMode(int first_col, int first_line, int sign, int fAlt)
+        public int panFlightMode(int first_col, int first_line, int sign, int fAlt, Panel p)
         {
             osd.setPanel(first_col, first_line);
             
@@ -1445,7 +1445,7 @@ const int  ANGLE_2=                25     ;                 // angle above we sw
             else osd_battery_pic = 0xb9;
         }
 */
-        public int panRadarScale(int first_col, int first_line, int sign, int fAlt) {
+        public int panRadarScale(int first_col, int first_line, int sign, int fAlt, Panel p) {
 
 	    	osd.setPanel(first_col, first_line);
  			
@@ -1456,7 +1456,7 @@ const int  ANGLE_2=                25     ;                 // angle above we sw
 			return 0;
 		}
 
-        public int panFData(int first_col, int first_line, int sign, int fAlt) {
+        public int panFData(int first_col, int first_line, int sign, int fAlt, Panel p) {
 			
               double total_flight_time_seconds = 12345,
                   max_home_distance = 3457,
@@ -1482,8 +1482,8 @@ const int  ANGLE_2=                25     ;                 // angle above we sw
                                                                                                                                      osd_lon);
 				return 0;
 		}
-		
-        public int panBaroAlt(int first_col, int first_line, int sign, int fAlt) {
+
+        public int panBaroAlt(int first_col, int first_line, int sign, int fAlt, Panel p) {
             osd.setPanel(first_col, first_line);
 
             if (sign == 1)//ArduCopter
@@ -1493,7 +1493,7 @@ const int  ANGLE_2=                25     ;                 // angle above we sw
             return 0;
         }
 
-        public int panMessage(int first_col, int first_line, int sign, int fAlt) {
+        public int panMessage(int first_col, int first_line, int sign, int fAlt, Panel p) {
             osd.setPanel(first_col, first_line);
 
             if(sign==1)osd.printf("!");
@@ -1501,7 +1501,7 @@ const int  ANGLE_2=                25     ;                 // angle above we sw
             return 0;
         }
 
-        public int panSenor1(int first_col, int first_line, int sign, int fAlt) {
+        public int panSenor1(int first_col, int first_line, int sign, int fAlt, Panel p) {
             osd.setPanel(first_col, first_line);
 
             string fmt;
@@ -1519,7 +1519,7 @@ const int  ANGLE_2=                25     ;                 // angle above we sw
             return 0;
         }
 
-        public int panSenor2(int first_col, int first_line, int sign, int fAlt) {
+        public int panSenor2(int first_col, int first_line, int sign, int fAlt, Panel p) {
             osd.setPanel(first_col, first_line);
 
             string fmt;
@@ -1535,7 +1535,7 @@ const int  ANGLE_2=                25     ;                 // angle above we sw
             return 0;
         }
 
-        public int panSenor3(int first_col, int first_line, int sign, int fAlt) {
+        public int panSenor3(int first_col, int first_line, int sign, int fAlt, Panel p) {
             osd.setPanel(first_col, first_line);
 
             string fmt;
@@ -1551,7 +1551,7 @@ const int  ANGLE_2=                25     ;                 // angle above we sw
             return 0;
         }
 
-        public int panSenor4(int first_col, int first_line, int sign, int fAlt) {
+        public int panSenor4(int first_col, int first_line, int sign, int fAlt, Panel p) {
             osd.setPanel(first_col, first_line);
             string fmt;
 
@@ -1566,7 +1566,7 @@ const int  ANGLE_2=                25     ;                 // angle above we sw
             return 0;
         }
 
-        public int panHdop(int first_col, int first_line, int sign, int fAlt) {
+        public int panHdop(int first_col, int first_line, int sign, int fAlt, Panel p) {
             osd.setPanel(first_col, first_line);
             if (sign == 1)
                 osd.printf("\x2a%2.1f", (osd_gps_hdop * .01));
@@ -1577,7 +1577,7 @@ const int  ANGLE_2=                25     ;                 // angle above we sw
 
         public int[] state_values = new int[4];
 
-        public int panState(int first_col, int first_line, int sign, int fAlt) {
+        public int panState(int first_col, int first_line, int sign, int fAlt, Panel p) {
             osd.setPanel(first_col, first_line);
 
             // fAlt  - напрямую номер канала
@@ -1589,11 +1589,18 @@ const int  ANGLE_2=                25     ;                 // angle above we sw
             // On!
 
             if (sign == 1) osd.printf("C%d ",fAlt/2 + 5);
-            osd.printf("Off");
+            int id=p.string_id ;
+            int n=p.string_count;
+            string s=osd.StringArray[id];
+            for(int i=1;i<n;i++){
+                string s1 = osd.StringArray[id+i];
+                if(s1.Length > s.Length) s=s1;
+            }
+            osd.printf("%s",s);
             return 0;
         }
 
-        public int panScale(int first_col, int first_line, int sign, int fAlt) {
+        public int panScale(int first_col, int first_line, int sign, int fAlt, Panel p) {
             osd.setPanel(first_col, first_line);
 
             
@@ -1601,16 +1608,8 @@ const int  ANGLE_2=                25     ;                 // angle above we sw
             osd.printf("\x80\x81\x80\x80\x80");
             return 0;
         }
-        
-        public int panEScale(int first_col, int first_line, int sign, int fAlt) {
-            osd.setPanel(first_col, first_line);
 
-
-            if (sign == 1) osd.printf("%d", fAlt / 2 + 5);
-            osd.printf("\x80\x80\x81\x80\x80");
-            return 0;
-        }
-        public int panCvlaue(int first_col, int first_line, int sign, int fAlt) {
+        public int panCvlaue(int first_col, int first_line, int sign, int fAlt, Panel p) {
             osd.setPanel(first_col, first_line);
 
             if (sign == 1) osd.printf("C%d ", fAlt / 2 + 5);
