@@ -34,7 +34,7 @@ namespace OSD {
     public partial class OSD : Form {
 
         //*****************************************/		
-        public const string VERSION = "r853 DV";
+        public const string VERSION = "r856a DV";
 
         //max 7456 datasheet pg 10
         //pal  = 16r 30 char
@@ -178,6 +178,9 @@ namespace OSD {
 
         public OSD osdx;
 
+        private int MAV_packetcount=0;
+        volatile object objlock = new object();
+
         public OSD() {
 
             conf = new Config(this); // конфиг по умолчанию
@@ -287,7 +290,7 @@ namespace OSD {
                 var pi = scr[n].panelItems;
 
                 // Display name,printfunction,X,Y,ENaddress,Xaddress,Yaddress
-                pi[a++] = new Panel("Horizon", pan.panHorizon, 8, 5, panHorizon_XY, 1, UI_Mode.UI_Checkbox, 0, "Show HUD frame", 0, "Show ILS", 1, "Show Radar", 0 , "  with track"); // first!
+                pi[a++] = new Panel("Horizon", pan.panHorizon, 8, 5, panHorizon_XY, 1, UI_Mode.UI_Checkbox, 0, "Show HUD frame", 0, "Show ILS", 1,   "Show Radar" , 0 , "  with track"); // first!
 
                 //pi[a++] = new Panel("Center", pan.panCenter, 13, 8, panCenter_XY);
                 pi[a++] = new Panel("Pitch", pan.panPitch, 7, 1, panPitch_XY);
@@ -1017,33 +1020,47 @@ namespace OSD {
 
             int err;
             if (current.Text == "Config") {
-                err = conf.writeEEPROM(wr_start, wr_length);
-                if (err > 0)
-                    MessageBox.Show("Failed to upload new configuration data");
-                else if (err == 0)
-                    toolStripStatusLabel1.Text = "Done writing configuration data!";
-
-            } else if (panel_number >= 0 && panel_number < npanel) {
-                err = conf.writeEEPROM(wr_start, wr_length);
-                if(err==0) { // write all strings on each panel change
-                    string[] tmp = new string[128];
-                    tmp=conf.eeprom.strings;
-                    bool write=false;
-                    for(int i=0; i<128;i++){
-                        if(tmp[i] != StringArray[i])
-                            write=true;
-                    }
-                    if(write) {
-                        conf.eeprom.strings = StringArray;
-                        err = conf.writeEEPROM(Strings_offst, Config.Settings_size);
-                    }
+                if(MavlinkModeMenuItem.Checked){
+                    err = MavWriteEEprom(wr_start, wr_length);
+                    toolStripStatusLabel1.Text = "Done sending configuration data!";
+                } else {
+                    err = conf.writeEEPROM(wr_start, wr_length);
+                    if (err > 0)
+                        MessageBox.Show("Failed to upload new configuration data");
+                    else if (err == 0)
+                        toolStripStatusLabel1.Text = "Done writing configuration data!";
                 }
 
-                if (err > 0)
-                    MessageBox.Show("Failed to upload new Panel data");
-                else if (err == 0) {
-                    //MessageBox.Show("Done writing Panel data!");
-                    toolStripStatusLabel1.Text = "EEPROM write done";
+            } else if (panel_number >= 0 && panel_number < npanel) {
+                string[] tmp = new string[128];
+                tmp=conf.eeprom.strings;
+                bool writeStrings=false;
+                for(int i=0; i<128;i++){
+                    if(tmp[i] != StringArray[i])
+                        writeStrings=true;
+                }
+
+                if(MavlinkModeMenuItem.Checked){
+                    err = MavWriteEEprom(wr_start, wr_length);
+                    if(writeStrings) {
+                        conf.eeprom.strings = StringArray;
+                        err = MavWriteEEprom(Strings_offst, Config.Settings_size);
+                    }
+                } else {
+                    err = conf.writeEEPROM(wr_start, wr_length);
+                    if(err==0) { // write all strings on each panel change
+                        if(writeStrings) {
+                            conf.eeprom.strings = StringArray;
+                            err = conf.writeEEPROM(Strings_offst, Config.Settings_size);
+                        }
+                    }
+
+                    if (err > 0)
+                        MessageBox.Show("Failed to upload new Panel data");
+                    else if (err == 0) {
+                        //MessageBox.Show("Done writing Panel data!");
+                        toolStripStatusLabel1.Text = "EEPROM write done";
+                    }
                 }
             }
             start_clear_timeout();
@@ -1232,7 +1249,7 @@ namespace OSD {
 
             if (fail)
                 return;
-
+            scr[panel_number].deselect();
 
             //Verify EEPROM version
             if (conf.eeprom.sets.CHK1_VERSION != VER) { // no match
@@ -1254,7 +1271,8 @@ namespace OSD {
             int tN = panel_number;
             for (int k = 0; k < npanel; k++) {
                 panel_number = k;
-                
+                scr[k].fReenter =true;
+
                 for (int a = 0; a < scr[k].panelItems.Length; a++) {
                     if (this.scr[k].panelItems[a] != null) {
                         var pi = scr[k].panelItems[a];
@@ -1312,6 +1330,7 @@ namespace OSD {
                         }
                     }
                 }
+                scr[k].fReenter = false;
             }
 
             try {
@@ -1613,7 +1632,7 @@ namespace OSD {
                     int length = Convert.ToInt32(line.Substring(1, 2), 16);
                     int address = Convert.ToInt32(line.Substring(3, 4), 16);
                     int option = Convert.ToInt32(line.Substring(7, 2), 16);
-                    Console.WriteLine("len {0} add {1} opt {2}", length, address, option);
+                    //Console.WriteLine("len {0} add {1} opt {2}", length, address, option);
 
                     if (option == 0) {
                         string data = line.Substring(9, length * 2);
@@ -2421,7 +2440,7 @@ namespace OSD {
                     Application.DoEvents();
 
                     while (comPort.BytesToRead != 0)
-                        Console.WriteLine(comPort.ReadExisting());
+                        parseInputData(comPort.ReadExisting());
 
                     comPort.WriteLine("");
                     comPort.WriteLine("");
@@ -2503,6 +2522,7 @@ namespace OSD {
 
                             string resp = comPort.ReadExisting(); //CDn
                             //Console.WriteLine("responce "+resp );
+                            //parseInputData(resp);
                             //if (length < 1000) {
                             //    lblFWModelType.Text = lblFWModelType.Text;
                             //}
@@ -2528,7 +2548,7 @@ namespace OSD {
                             return;
                         }
                     }
-                    //Console.WriteLine(comPort.ReadExisting());
+                    //CparseInputData(comPort.ReadExisting());
                     if (comPort.BytesToRead != 0)
                         comPort.ReadLine();
 
@@ -3009,7 +3029,7 @@ namespace OSD {
                             return;
                         }
                     }
-                    //Console.WriteLine(comPort.ReadExisting());
+                    //parseInputData(comPort.ReadExisting());
                     if (comPort.BytesToRead != 0)
                         comPort.ReadLine();
 
@@ -3251,7 +3271,7 @@ namespace OSD {
 
 
                     }
-                    //Console.WriteLine(comPort.ReadExisting());
+                    //parseInputData(comPort.ReadExisting());
                     if (comPort.BytesToRead != 0)
                         comPort.ReadLine();
 
@@ -3493,7 +3513,7 @@ namespace OSD {
             if (hdr.Length > 1) {
                 int k = int.Parse(hdr[1]);
                 currentlyselected = "";
-
+                scr[k-1].deselect();
                 Draw(k - 1);
                 BUT_CopyScreen.Visible = true;
                 BUT_ClearScreen.Visible = true;
@@ -4027,7 +4047,7 @@ namespace OSD {
                     time = start_time = get_timestamp(bytes, 0);
                     for (byteIndex = 8; byteIndex < bytes.Length; byteIndex++) {
                         if (comPort.BytesToRead != 0)
-                            Console.WriteLine(comPort.ReadExisting());
+                            parseInputData(comPort.ReadExisting());
 
 
                         byte c = bytes[byteIndex];
@@ -4095,7 +4115,7 @@ namespace OSD {
                         }
 
                         while (comPort.BytesToRead != 0)
-                            Console.WriteLine(comPort.ReadExisting());
+                            parseInputData(comPort.ReadExisting());
                     }
                 } catch {
                     continue;
@@ -4106,7 +4126,6 @@ namespace OSD {
 
 
         private void connectComPortToolStripMenuItem_Click(object sender, EventArgs e) {
-        //
             frmComPort frm = new frmComPort(this);
             //frm.Show();
             frm.ShowInTaskbar =false;
@@ -4130,6 +4149,16 @@ namespace OSD {
             scr[PANEL_tabs.SelectedIndex - 1].clearScreen();
         }
 
+
+        private void MavlinkModeMenuItem_Click(object sender, EventArgs e) {
+            BUT_ReadOSD.Enabled = ! MavlinkModeMenuItem.Checked;
+            updateFontToolStripMenuItem.Enabled = !MavlinkModeMenuItem.Checked;
+            updateFirmwareToolStripMenuItem.Enabled = !MavlinkModeMenuItem.Checked;
+            resetEepromToolStripMenuItem.Enabled = !MavlinkModeMenuItem.Checked;
+        }
+
+        
+
         public void updatePanelStrings(int str_id, int str_count, string str) {
             str = convertChars(str);
             string[] s=str.Split('|');
@@ -4144,6 +4173,196 @@ namespace OSD {
             }
         
         }
+
+        private void parseInputData(string s) {
+            Console.WriteLine(s);
+        }
+
+        [StructLayout(LayoutKind.Sequential, Pack = 1, Size = 136)]
+        private struct Mav_conf { // needs to fit in 253 bytes
+            public byte magick0; // = 0xee 'O' 'S' 'D'
+            public byte magick1;
+            public byte magick2;
+            public byte magick3;
+            public byte cmd;           // command
+            public byte id;            // number of 128-bytes block
+            public byte len;           // real length
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 128)]
+            public byte[] data;
+            public byte crc;           // may be
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 117)]
+            public byte[] pad;
+        };
+
+        
+        public static byte[] StructureToByteArray(object obj){ // Stolen from MissionPlanner
+            int len = Marshal.SizeOf(obj);
+            byte[] arr = new byte[len];
+            IntPtr ptr = Marshal.AllocHGlobal(len);
+            Marshal.StructureToPtr(obj, ptr, true);
+            Marshal.Copy(ptr, arr, 0, len);
+            Marshal.FreeHGlobal(ptr);
+            return arr;
+        }
+
+
+        public void sendPacket(object indata) {
+            bool validPacket = false;
+            byte a = 0;
+            foreach (Type ty in MAVLink.MAVLINK_MESSAGE_INFO) {
+                if (ty == indata.GetType()) {
+                    validPacket = true;
+                    generatePacket(a, indata);
+                    return;
+                }
+                a++;
+            }
+            if (!validPacket) {
+                Console.WriteLine("Mavlink : NOT VALID PACKET sendPacket() " + indata.GetType().ToString());
+            }
+        }
+
+        /// <summary>
+        /// Generate a Mavlink Packet and write to serial
+        /// </summary>
+        /// <param name="messageType">type number = MAVLINK_MSG_ID</param>
+        /// <param name="indata">struct of data</param>
+        void generatePacket(byte messageType, object indata) {
+           
+            lock (objlock) {
+                byte[] data;
+
+                parseInputData(comPort.ReadExisting());
+
+                data = StructureToByteArray(indata);
+
+                //Console.WriteLine(DateTime.Now + " PC Doing req "+ messageType + " " + this.BytesToRead);
+                byte[] packet = new byte[data.Length + 6 + 2];
+
+                packet[0] = 254;
+                packet[1] = (byte)data.Length;
+                packet[2] = (byte)MAV_packetcount;
+
+                MAV_packetcount++;
+
+                packet[3] = 255; // gcssysid; // this is always 255 - MYGCS
+                packet[4] = (byte)MAVLink.MAV_COMPONENT.MAV_COMP_ID_CAMERA;
+                packet[5] = messageType;
+
+                int i = 6;
+                foreach (byte b in data) {
+                    packet[i++] = b;
+                }
+
+                ushort checksum = MAVLink.MavlinkCRC.crc_calculate(packet, packet[1] /* data.length */ + 6);
+
+                checksum = MAVLink.MavlinkCRC.crc_accumulate(MAVLink.MAVLINK_MESSAGE_CRCS[messageType], checksum);
+
+                byte ck_a = (byte)(checksum & 0xFF); ///< High byte
+                byte ck_b = (byte)(checksum >> 8); ///< Low byte
+
+                packet[i++] = ck_a;                
+                packet[i++] = ck_b;                
+
+                comPort.Write(packet, 0, i);
+
+                System.Threading.Thread.Sleep(100); 
+                parseInputData(comPort.ReadExisting());
+            }
+        }
+
+        private int MavWriteEEprom(int pos, int length) {
+            
+ 
+            Mav_conf packet = new Mav_conf();
+            
+            packet.data = new byte [128];
+            packet.pad =new byte[117];
+
+            if (comPort.IsOpen)
+                comPort.Close();
+
+            try {
+
+                comPort.PortName = CMB_ComPort.Text;
+                comPort.BaudRate = 57600;
+
+                comPort.Open();
+
+                parseInputData(comPort.ReadExisting());
+
+                MAVLink.mavlink_heartbeat_t htb = new MAVLink.mavlink_heartbeat_t(){
+                    type = (byte)MAVLink.MAV_TYPE.GCS,
+                    autopilot = (byte)MAVLink.MAV_AUTOPILOT.INVALID,
+                    mavlink_version = 3// MAVLink.MAVLINK_VERSION
+                };
+                                    
+                sendPacket(htb); // lets AutoBaud will be happy
+                sendPacket(htb);
+                sendPacket(htb);
+                sendPacket(htb);
+                
+                int seq=0; // reset on each heartbeat
+                int bytes=0;
+                const int Block_Size=128;
+
+                for (int n = pos / Block_Size; bytes < length; n++) {
+                    int sz = Block_Size;
+                    
+                    if(bytes+sz > length)                     
+                        sz=length-bytes;
+                    
+                    
+
+                    packet.magick0 = (byte) 0xEE; // = 0xee 'O' 'S' 'D'
+                    packet.magick1 = (byte) 'O';
+                    packet.magick2 = (byte) 'S';
+                    packet.magick3 = (byte) 'D';
+
+                    packet.cmd = (byte) 'w';           // command
+                    packet.id = (byte) n;            // number of 128-bytes block
+                    packet.len = (byte) sz;           // real length
+            
+                    for(int k=0; k<sz; k++)
+                        packet.data[k] = conf.eeprom[pos + bytes + k];
+
+
+                    bytes+=sz;
+
+                    MAVLink.mavlink_encapsulated_data_t ed = new MAVLink.mavlink_encapsulated_data_t(){
+                        seqnr=(ushort)(++seq),
+                        data = StructureToByteArray(packet)
+                    };
+
+                    sendPacket(ed);
+                    sendPacket(ed);
+                    sendPacket(ed);
+
+                    System.Threading.Thread.Sleep(100); 
+                }
+
+                packet.cmd = (byte)'b';         // command  "Reboot"
+                packet.len = (byte)0;           // real length
+
+                MAVLink.mavlink_encapsulated_data_t rbt = new MAVLink.mavlink_encapsulated_data_t() {
+                    seqnr = (ushort)(++seq),
+                    data = StructureToByteArray(packet)
+                };
+
+                sendPacket(rbt);
+                sendPacket(rbt);
+                
+                for(int i=0; i<100; i++){
+                    System.Threading.Thread.Sleep(10); 
+                    parseInputData(comPort.ReadExisting());
+                    Application.DoEvents();
+                }
+                return 1;
+            } catch (Exception ex) {
+                MessageBox.Show("Error sending data: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); 
+                return 0;
+            }
+        } 
 
     }
 }

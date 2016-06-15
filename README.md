@@ -261,6 +261,16 @@ v582
 v853
 * strings now are working! And Channel State panel uses first 5 of them
 
+v854
+* an attempt to recover a hung MAX7456
+
+v855
+* write configuration via MAVlink is now working! But only on recent verions of ArduPilot which translates GCS messages to output
+
+v856
+*fixed bug with panel's properties visibility
+* 856a - fixed bug with incorrect restoring panel's flags
+
 Attention! This version is incompatible with the tools from the ArduCam and original MinimOSD-extra!
 
 Discussion forum - http://www.rcgroups.com/forums/showthread.php?t=2591835
@@ -548,6 +558,15 @@ v582
 
 v853
 * Строки работают! И панель Channel State использует первые 5 из них
+
+v854
+* попытка восстановления зависшей MAX7456
+
+v855
+* запись конфигурации через MAVlink теперь работает! Но только на старших версиях ArduPilot которые транслируют команды с наземной станции на выход
+
+v856
+* исправлен баг с видимостью свойств панели
 
 Внимание! Эта версия несовместима с утилитами из оригинальной MinimOSD!
 
