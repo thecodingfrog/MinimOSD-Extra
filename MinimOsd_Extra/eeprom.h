@@ -84,6 +84,7 @@ struct Panel {
     point Scale;        // 90
     point EScale;       // 92
     point CValue;       // 94
+
 };
 
 union _Panel {
